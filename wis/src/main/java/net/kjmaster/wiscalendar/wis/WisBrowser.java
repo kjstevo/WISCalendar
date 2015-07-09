@@ -12,6 +12,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.JavascriptInterface;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
@@ -120,11 +121,19 @@ public class WisBrowser extends ActionBarActivity {
                 }
             }
 
-            progressDialog.setProgress(getProgress());
+            try {
+                progressDialog.setProgress(getProgress());
+            } catch (Exception e) {
+                Log.e("wis", e.getMessage());
+            }
 
 
         }
-        progressDialog.setMax(locations.size());
+        try {
+            progressDialog.setMax(locations.size());
+        } catch (Exception e) {
+            Log.e("wis", e.getMessage());
+        }
         for (int i = 0; i < locations.size() - 1; i++) {
             WisLocation wisLocation = locations.get(i);
             if (wisLocation != null) {
@@ -235,7 +244,7 @@ public class WisBrowser extends ActionBarActivity {
 
     /* An instance of this class will be registered as a JavaScript interface */
     static class MyJavaScriptInterface {
-        @SuppressWarnings("unused")
+        @JavascriptInterface
         public void showHTML(String html) {
             PlaceholderFragment.setHtmlData(html);
 

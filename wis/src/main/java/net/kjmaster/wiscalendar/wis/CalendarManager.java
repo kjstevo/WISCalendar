@@ -12,8 +12,13 @@ import java.util.List;
  * Created by kjstevo on 5/27/14.
  */
 public class CalendarManager {
-    private long calId;
+    private long calendarId;
     private List<Long> calIdList;
+
+    public void setCalendarId(long calendarId) {
+        this.calendarId = calendarId;
+    }
+
     public CalendarManager(ContentResolver contentResolver) {
         String[] projection =
                 new String[]{
@@ -29,7 +34,7 @@ public class CalendarManager {
                                 null,
                                 CalendarContract.Calendars._ID + " ASC");
         if (calCursor.moveToFirst()) {
-            calId = calCursor.getLong(0);
+            calendarId = calCursor.getLong(0);
             while(!calCursor.isAfterLast()){
                 calIdList.add(calCursor.getLong(0));
             }
@@ -46,7 +51,7 @@ public class CalendarManager {
         values.put(CalendarContract.Events.DTEND, wisLocation.getStartDate());
         values.put(CalendarContract.Events.TITLE, wisLocation.getName());
         values.put(CalendarContract.Events.EVENT_LOCATION, wisLocation.getAddress());
-        values.put(CalendarContract.Events.CALENDAR_ID, calId);
+        values.put(CalendarContract.Events.CALENDAR_ID, calendarId);
         values.put(CalendarContract.Events.EVENT_TIMEZONE, "America/Los_Angeles");
 
         if (wisLocation.getMeetTime() != null) {
