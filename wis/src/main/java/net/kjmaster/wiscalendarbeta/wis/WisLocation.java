@@ -1,4 +1,4 @@
-package net.kjmaster.wiscalendar.wis;
+package net.kjmaster.wiscalendarbeta.wis;
 
 import android.util.Log;
 

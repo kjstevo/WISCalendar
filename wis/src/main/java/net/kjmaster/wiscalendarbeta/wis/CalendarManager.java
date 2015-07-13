@@ -1,10 +1,12 @@
-package net.kjmaster.wiscalendar.wis;
+package net.kjmaster.wiscalendarbeta.wis;
 
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.provider.CalendarContract;
+import android.util.Log;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -14,10 +16,6 @@ import java.util.List;
 public class CalendarManager {
     private long calendarId;
     private List<Long> calIdList;
-
-    public void setCalendarId(long calendarId) {
-        this.calendarId = calendarId;
-    }
 
     public CalendarManager(ContentResolver contentResolver) {
         String[] projection =
@@ -35,11 +33,25 @@ public class CalendarManager {
                                 CalendarContract.Calendars._ID + " ASC");
         if (calCursor.moveToFirst()) {
             calendarId = calCursor.getLong(0);
-            while(!calCursor.isAfterLast()){
-                calIdList.add(calCursor.getLong(0));
+            calIdList = new ArrayList<>();
+            while (!calCursor.isAfterLast()) {
+
+                try {
+                    calIdList.add(calCursor.getLong(0));
+                } catch (Exception e) {
+                    Log.e("wis", "Error adding calenderId to list.  The message is :" + e.getMessage());
+                }
+                calCursor.moveToNext();
+
             }
         }
+        calCursor.close();
     }
+
+    public void setCalendarId(long calendarId) {
+        this.calendarId = calendarId;
+    }
+
     public List<Long> getCalenderList(){
         return calIdList;
     }
@@ -63,4 +75,5 @@ public class CalendarManager {
 
 
     }
+
 }

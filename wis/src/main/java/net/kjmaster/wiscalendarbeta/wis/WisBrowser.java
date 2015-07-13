@@ -1,4 +1,4 @@
-package net.kjmaster.wiscalendar.wis;
+package net.kjmaster.wiscalendarbeta.wis;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -15,6 +15,8 @@ import android.view.ViewGroup;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+
+import net.kjmaster.wiscalendar.wis.R;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -77,7 +79,7 @@ public class WisBrowser extends ActionBarActivity {
         // Elements elementsLinks = doc.select("a[href]");
 
 
-        ArrayList<WisLocation> locations = new ArrayList<WisLocation>();
+        ArrayList<WisLocation> locations = new ArrayList<>();
 
         //createProgressDialog(elements);
         performUpdate(calendarManager, elements, locations);
@@ -124,7 +126,7 @@ public class WisBrowser extends ActionBarActivity {
             try {
                 progressDialog.setProgress(getProgress());
             } catch (Exception e) {
-                Log.e("wis", e.getMessage());
+                Log.e("wis", "Error setting progress dialog.");
             }
 
 
@@ -132,7 +134,7 @@ public class WisBrowser extends ActionBarActivity {
         try {
             progressDialog.setMax(locations.size());
         } catch (Exception e) {
-            Log.e("wis", e.getMessage());
+            Log.e("wis", "Error setMax on Progress dialog");
         }
         for (int i = 0; i < locations.size() - 1; i++) {
             WisLocation wisLocation = locations.get(i);
@@ -140,7 +142,12 @@ public class WisBrowser extends ActionBarActivity {
                 publishEvent(wisLocation, calendarManager);
                 Log.d(myApp.getPackageName(), wisLocation.toString());
             }
-            progressDialog.setProgress(i + 1);
+
+            try {
+                progressDialog.setProgress(i + 1);
+            } catch (Exception e) {
+                Log.e("wis", "Error setProgress");
+            }
 
         }
         new AlertDialog.Builder(myApp)
